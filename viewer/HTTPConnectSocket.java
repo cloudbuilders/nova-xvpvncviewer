@@ -36,7 +36,7 @@ class HTTPConnectSocket extends Socket {
     super(proxyHost, proxyPort);
 
     // Send the CONNECT request
-    getOutputStream().write(("CONNECT " + host + ":" + port +
+    getOutputStream().write(("CONNECT " + host +
 			     " HTTP/1.0\r\n\r\n").getBytes());
 
     // Read the first line of the response
@@ -44,8 +44,8 @@ class HTTPConnectSocket extends Socket {
     String str = is.readLine();
 
     // Check the HTTP error code -- it should be "200" on success
-    if (!str.startsWith("HTTP/1.0 200 ")) {
-      if (str.startsWith("HTTP/1.0 "))
+    if (!str.startsWith("HTTP/1.1 200 ")) {
+      if (str.startsWith("HTTP/1.1 "))
 	str = str.substring(9);
       throw new IOException("Proxy reports \"" + str + "\"");
     }

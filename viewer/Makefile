@@ -6,8 +6,10 @@
 
 CP = cp
 JC = javac -J-Xmx16m
+JC = javac
 JCFLAGS = -target 1.5 -source 1.5 -nowarn
 JAR = jar -J-Xmx16m
+JAR = jar
 ARCHIVE = VncViewer.jar
 MANIFEST = MANIFEST.MF
 PAGES = index.vnc
