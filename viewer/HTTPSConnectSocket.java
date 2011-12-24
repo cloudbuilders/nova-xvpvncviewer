@@ -37,17 +37,23 @@ class HTTPSConnectSocket {
   private SSLSocket ssl;
 
   public HTTPSConnectSocket(String host, int port,
-			   String proxyHost, int proxyPort)
+			   String urlString)
     throws IOException {
 
-    // Connect to the specified HTTP proxy
+    URL url = null;
+    try {
+        url = new URL(urlString);
+    } catch(MalformedURLException me) {
+        System.out.println("Malformed url");
+        System.exit(1);
+    }
 
     SSLSocketFactory ssf = (SSLSocketFactory)SSLSocketFactory.getDefault();
-    ssl = (SSLSocket)ssf.createSocket(proxyHost, proxyPort);
+    ssl = (SSLSocket)ssf.createSocket(host, port);
     ssl.startHandshake();
 
     // Send the CONNECT request
-    ssl.getOutputStream().write(("CONNECT " + host +
+    ssl.getOutputStream().write(("CONNECT " + url.getFile() +
 			     " HTTP/1.0\r\n\r\n").getBytes());
 
     // Read the first line of the response

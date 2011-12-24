@@ -713,16 +713,24 @@ public class VncViewer extends java.applet.Applet
   //
 
   void readParameters() {
-    host = readParameter("HOST", !inAnApplet);
-    if (host == null) {
-      host = getCodeBase().getHost();
-      if (host.equals("")) {
-	fatalError("HOST parameter not specified");
-      }
+    // SocketFactory.
+    URL url = null;
+    try {
+        url = new URL(readParameter("URL", false));
+    } catch(MalformedURLException me) {
+        fatalError("Malformed url");
     }
 
-    port = readIntParameter("PORT", 5900);
+    host = url.getHost();
+    if (host == null) {
+	    fatalError("HOST parameter not specified");
+    }
 
+    port = url.getPort();
+
+    System.out.println(port + " " + host );
+
+/*
     // Read "XVPPASSWORD", "ENCPASSWORD" or "PASSWORD" parameter if specified.
     readPasswordParameters();
 
@@ -748,7 +756,7 @@ public class VncViewer extends java.applet.Applet
 	fatalError("Unable to decode vm string: " + vm, e);
       }
     }
-
+*/
     String str;
 
     // added for XVP, implies both view only and no controls
@@ -805,8 +813,15 @@ public class VncViewer extends java.applet.Applet
     debugStatsExcludeUpdates = readIntParameter("DEBUG_XU", 0);
     debugStatsMeasureUpdates = readIntParameter("DEBUG_CU", 0);
 
-    // SocketFactory.
-    socketFactory = readParameter("SocketFactory", false);
+    if (url.getProtocol().equals("http")) {
+        socketFactory = "HTTPConnectSocketFactory";
+    }
+    else if (url.getProtocol().equals("https")) {
+        socketFactory = "HTTPSConnectSocketFactory";
+    }
+    else {
+	    fatalError("Unrecognized protocol: '" + url.getProtocol() + "'");
+    }
   }
 
   //

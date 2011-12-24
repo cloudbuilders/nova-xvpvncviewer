@@ -29,14 +29,22 @@ import java.io.*;
 class HTTPConnectSocket extends Socket {
 
   public HTTPConnectSocket(String host, int port,
-			   String proxyHost, int proxyPort)
+			   String urlString)
     throws IOException {
 
-    // Connect to the specified HTTP proxy
-    super(proxyHost, proxyPort);
+    // Connect to the specified Server
+    super(host, port);
+
+    URL url = null;
+    try {
+        url = new URL(urlString);
+    } catch(MalformedURLException me) {
+        System.out.println("Malformed url");
+        System.exit(1);
+    }
 
     // Send the CONNECT request
-    getOutputStream().write(("CONNECT " + host +
+    getOutputStream().write(("CONNECT " + url.getFile() +
 			     " HTTP/1.0\r\n\r\n").getBytes());
 
     // Read the first line of the response

@@ -32,39 +32,25 @@ class HTTPConnectSocketFactory implements SocketFactory {
   public Socket createSocket(String host, int port, Applet applet)
     throws IOException {
 
-    return createSocket(host, port,
-			applet.getParameter("PROXYHOST1"),
-			applet.getParameter("PROXYPORT1"));
+    return createSocket(host, port, applet.getParameter("URL"));
   }
 
   public Socket createSocket(String host, int port, String[] args)
     throws IOException {
 
-    return createSocket(host, port,
-			readArg(args, "PROXYHOST1"),
-			readArg(args, "PROXYPORT1"));
+    return createSocket(host, port, readArg(args, "URL"));
   }
 
   public Socket createSocket(String host, int port,
-			     String proxyHost, String proxyPortStr)
+			     String urlString)
     throws IOException {
 
-    int proxyPort = 0;
-    if (proxyPortStr != null) {
-      try {
-	proxyPort = Integer.parseInt(proxyPortStr);
-      } catch (NumberFormatException e) { }
-    }
-
-    if (proxyHost == null || proxyPort == 0) {
+    if (urlString == null) {
       System.out.println("Incomplete parameter list for HTTPConnectSocket");
       return new Socket(host, port);
     }
-
-    System.out.println("HTTP CONNECT via proxy " + proxyHost +
-		       " port " + proxyPort);
     HTTPConnectSocket s =
-      new HTTPConnectSocket(host, port, proxyHost, proxyPort);
+      new HTTPConnectSocket(host, port, urlString);
 
     return (Socket)s;
   }
