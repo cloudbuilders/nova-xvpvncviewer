@@ -728,8 +728,7 @@ public class VncViewer extends java.applet.Applet
 
     port = url.getPort();
 
-    System.out.println(port + " " + host );
-
+// (anthony) - comment out xvp-specific stuff
 /*
     // Read "XVPPASSWORD", "ENCPASSWORD" or "PASSWORD" parameter if specified.
     readPasswordParameters();
