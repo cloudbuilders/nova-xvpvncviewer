@@ -1,2 +1,2 @@
-Java vnc viewer for Openstack Nova.  See https://github.com/openstack/nova/blob/master/doc/source/runnova/vncconsole.rst
+Java vnc viewer for Openstack Nova.  See https://github.com/openstack/nova/blob/master/doc/source/man/nova-xvpvncproxy.rst
 for more information.
